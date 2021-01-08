@@ -48,27 +48,35 @@ class BurgerBuilder extends Component {
         this.setState({purchasable: sum > 0})
     }
 
-    addIngredientsHanlder = (type) => {
+    addIngredientsHanlder = ( type ) => {
+        const oldCount = this.state.ingredients[type];
+        const updatedCount = oldCount + 1;
         const updatedIngredients = {
             ...this.state.ingredients
         };
-        const newPrice = this.state.totalPrice + INGREDIENT_PRICES[type]
-        this.setState({totalPrice: newPrice, ingredients: updatedIngredients});
-        this.updatePurchaseState(updatedIngredients);
+        updatedIngredients[type] = updatedCount;
+        const priceAddition = INGREDIENT_PRICES[type];
+        const oldPrice = this.state.totalPrice;
+        const newPrice = oldPrice + priceAddition;
+        this.setState( { totalPrice: newPrice, ingredients: updatedIngredients } );
+        this.updatePurchaseState( updatedIngredients );
     }
 
-    removeIngredientseHandler = (type) => {
+    removeIngredientseHandler = ( type ) => {
         const oldCount = this.state.ingredients[type];
-        if (oldCount <= 0) {
+        if ( oldCount <= 0 ) {
             return;
         }
+        const updatedCount = oldCount - 1;
         const updatedIngredients = {
             ...this.state.ingredients
         };
-        updatedIngredients[type] = (this.state.ingredients[type] - 1);
-        const newPrice = this.state.totalPrice - INGREDIENT_PRICES[type]
-        this.setState({totalPrice: newPrice, ingredients: updatedIngredients});
-        this.updatePurchaseState(updatedIngredients);
+        updatedIngredients[type] = updatedCount;
+        const priceDeduction = INGREDIENT_PRICES[type];
+        const oldPrice = this.state.totalPrice;
+        const newPrice = oldPrice - priceDeduction;
+        this.setState( { totalPrice: newPrice, ingredients: updatedIngredients } );
+        this.updatePurchaseState( updatedIngredients );
     }
 
     purchaseHandler = () => {
